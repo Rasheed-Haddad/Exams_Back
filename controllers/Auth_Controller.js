@@ -1,11 +1,12 @@
+const bcrypt = require("bcrypt");
 require("dotenv").config();
 const Student = require("../models/Student");
 const jwt = require("jsonwebtoken");
 
 exports.signInStudent = async (req, res) => {
   try {
-    const { name, ID } = req.body;
-
+    const { name, ID, password } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
     const existingStudent = await Student.findOne({ ID: ID });
 
     // في حال لم يوجد الطالب، أنشئ حساب جديد
@@ -13,6 +14,7 @@ exports.signInStudent = async (req, res) => {
       const newStudent = new Student({
         name: name,
         ID: ID,
+        password: hashedPassword,
         scores: [],
       });
 
@@ -32,7 +34,13 @@ exports.signInStudent = async (req, res) => {
     if (existingStudent.name !== name) {
       return res.status(400).json({ error: "رقم جامعي مستخدم باسم مختلف" });
     }
-
+    const isPasswordValid = await bcrypt.compare(
+      password,
+      existingStudent.password
+    );
+    if (!isPasswordValid) {
+      return res.status(400).json({ error: "تأكد من كلمة المرور" });
+    }
     // إنشاء التوكن
     const token = jwt.sign(
       { id: existingStudent._id, name: existingStudent.name },
