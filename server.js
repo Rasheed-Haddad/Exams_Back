@@ -16,8 +16,8 @@ app.use("/", Auth_Routes);
 app.use("/", Get_Subjects_Routes);
 app.use("/", Send_Student_Score);
 
-app.get("/", (req, res) => {
-  res.send("===== API is Running =====");
+app.get("/health", (req, res) => {
+  res.status(200).send("K");
 });
 
 app.listen(PORT, () => {
