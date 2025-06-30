@@ -7,7 +7,7 @@ exports.Send_Student_Score = async (req, res) => {
     return res.status(404).json({ error: "الطالب غير موجود" });
   }
 
-  // تأكد من وجود مصفوفة scores
+  // تأكد من وجود مصفوفة score
   if (!Array.isArray(The_Student.scores)) {
     The_Student.scores = [];
   }
