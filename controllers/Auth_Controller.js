@@ -1,4 +1,6 @@
+require("dotenv").config();
 const Student = require("../models/Student");
+const jwt = require("jsonwebtoken");
 
 exports.signInStudent = async (req, res) => {
   try {
@@ -6,23 +8,40 @@ exports.signInStudent = async (req, res) => {
 
     const existingStudent = await Student.findOne({ ID: ID });
 
+    // في حال لم يوجد الطالب، أنشئ حساب جديد
     if (!existingStudent) {
       const newStudent = new Student({
         name: name,
         ID: ID,
         scores: [],
       });
+
       await newStudent.save();
-      return res.json({ user: newStudent });
+
+      // إنشاء التوكن
+      const token = jwt.sign(
+        { id: newStudent._id, name: newStudent.name },
+        process.env.JWT_SECRET,
+        { expiresIn: "90d" } // صلاحية التوكن
+      );
+
+      return res.json({ user: newStudent, token });
     }
 
+    // تحقق من مطابقة الاسم
     if (existingStudent.name !== name) {
       return res.status(400).json({ error: "رقم جامعي مستخدم باسم مختلف" });
     }
 
-    return res.json({ user: existingStudent });
+    // إنشاء التوكن
+    const token = jwt.sign(
+      { id: existingStudent._id, name: existingStudent.name },
+      process.env.JWT_SECRET,
+      { expiresIn: "90d" }
+    );
+
+    return res.json({ user: existingStudent, token });
   } catch (err) {
-    console.error("SignIn Error:", err);
     return res.status(500).json({ error: "خطأ في الخادم" });
   }
 };
