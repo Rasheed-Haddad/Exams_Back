@@ -5,6 +5,7 @@ const SUBJECTS_SCHEMA = mongoose.Schema({
   college_id: { type: Number, required: true },
   info: { type: String },
   time: { type: Number, required: true },
+  visible: { type: Boolean, default: false },
   questions: {
     type: [
       {
