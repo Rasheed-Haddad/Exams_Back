@@ -7,16 +7,11 @@ exports.Get_Subjects = async (req, res) => {
       college_id: college_id,
     });
 
-    const The_Exams = filteredSubjects.map((subject, index) => {
-      if (subject.available_to.includes(ID)) {
-        return subject;
-      }
-    });
-    if (The_Exams) {
-      res.json(The_Exams);
-    } else {
-      res.json([]);
-    }
+    const The_Exams = filteredSubjects.filter((subject) =>
+      subject.available_to.includes(ID)
+    );
+
+    res.json(The_Exams);
   } catch (err) {
     console.error(err);
     res.status(500).json("حدث خطأ في الخادم.");
