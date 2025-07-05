@@ -7,7 +7,6 @@ const SUBJECTS_SCHEMA = mongoose.Schema({
   time: { type: Number, required: true },
   visible: { type: Boolean, default: false },
   available_to: { type: [Number], default: [] },
-
   questions: {
     type: [
       {

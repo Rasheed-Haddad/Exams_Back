@@ -5,14 +5,16 @@ exports.Get_Subjects = async (req, res) => {
   try {
     const filteredSubjects = await Subjects.find({
       college_id: college_id,
-      available_to: ID, // Mongoose will check if the array includes this value
     });
 
-    if (filteredSubjects.length === 0) {
-      return res.status(404).json("حاليًا لا توجد اختبارات متاحة لهذا الطالب.");
+    const The_Exams = filteredSubjects.map((subject, index) =>
+      subject.available_to.includes(ID)
+    );
+    if (The_Exams) {
+      res.json(The_Exams);
+    } else {
+      res.json([]);
     }
-
-    res.json(filteredSubjects);
   } catch (err) {
     console.error(err);
     res.status(500).json("حدث خطأ في الخادم.");
