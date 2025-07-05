@@ -7,9 +7,11 @@ exports.Get_Subjects = async (req, res) => {
       college_id: college_id,
     });
 
-    const The_Exams = filteredSubjects.map((subject, index) =>
-      subject.available_to.includes(ID)
-    );
+    const The_Exams = filteredSubjects.map((subject, index) => {
+      if (subject.available_to.includes(ID)) {
+        return subject;
+      }
+    });
     if (The_Exams) {
       res.json(The_Exams);
     } else {
