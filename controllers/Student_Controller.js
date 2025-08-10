@@ -1,6 +1,6 @@
 const Student = require("../models/Student");
 exports.Send_Student_Score = async (req, res) => {
-  const { student_ID, subject_id, score } = req.body;
+  const { student_ID, subject_id, score, is_open_mode } = req.body;
   const The_Student = await Student.findOne({ ID: student_ID });
 
   if (!The_Student) {
@@ -12,7 +12,11 @@ exports.Send_Student_Score = async (req, res) => {
     The_Student.scores = [];
   }
 
-  The_Student.scores.push({ subject_id: subject_id, score: score });
+  The_Student.scores.push({
+    subject_id: subject_id,
+    score: score,
+    is_open_mode: is_open_mode,
+  });
   await The_Student.save();
 
   res.json(The_Student);
