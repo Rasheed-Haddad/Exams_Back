@@ -4,6 +4,9 @@ const STUDENT_SCHEMA = mongoose.Schema({
   ID: { type: Number, required: true },
   college_id: { type: Number },
   password: { type: String, required: true },
+  nick_name: { type: String, default: "John Doe" },
+  points: { type: Number, default: 0 },
+  badge: { type: String, default: "فارش" },
   scores: {
     type: [
       {

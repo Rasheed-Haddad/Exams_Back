@@ -8,6 +8,7 @@ const SUBJECTS_SCHEMA = mongoose.Schema({
   visible: { type: Boolean, default: false },
   available_to: { type: [Number], default: [] },
   open_mode: { type: Boolean, default: false },
+  price: { type: Number, default: 0 },
   questions: {
     type: [
       {
