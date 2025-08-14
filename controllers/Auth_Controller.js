@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 
 exports.signInStudent = async (req, res) => {
   try {
-    const { name, ID, password } = req.body;
+    const { name, nick_name, ID, password } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
     const existingStudent = await Student.findOne({ ID: ID });
 
@@ -13,9 +13,12 @@ exports.signInStudent = async (req, res) => {
     if (!existingStudent) {
       const newStudent = new Student({
         name: name,
+        nick_name: nick_name,
         ID: ID,
         password: hashedPassword,
         scores: [],
+        badge: "فارش",
+        points: 0,
       });
 
       await newStudent.save();
@@ -24,7 +27,7 @@ exports.signInStudent = async (req, res) => {
       const token = jwt.sign(
         { id: newStudent._id, name: newStudent.name },
         process.env.JWT_SECRET,
-        { expiresIn: "90d" } // صلاحية التوكن
+        { expiresIn: "60d" } // صلاحية التوكن
       );
 
       return res.json({ user: newStudent, token });
@@ -45,7 +48,7 @@ exports.signInStudent = async (req, res) => {
     const token = jwt.sign(
       { id: existingStudent._id, name: existingStudent.name },
       process.env.JWT_SECRET,
-      { expiresIn: "90d" }
+      { expiresIn: "60d" }
     );
 
     return res.json({ user: existingStudent, token });

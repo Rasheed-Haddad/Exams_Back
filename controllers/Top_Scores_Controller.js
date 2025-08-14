@@ -17,7 +17,11 @@ exports.Get_Top_Scores = async (req, res) => {
           (s) => s.subject_id === Number(ID) && !s.is_open_mode
         );
         return scoreEntry
-          ? { name: student.name, score: scoreEntry.score }
+          ? {
+              name: student.name,
+              nick_name: student.nick_name,
+              score: scoreEntry.score,
+            }
           : null;
       })
       .filter((entry) => entry !== null)
