@@ -21,6 +21,7 @@ exports.Get_Top_Scores = async (req, res) => {
               name: student.name,
               nick_name: student.nick_name,
               score: scoreEntry.score,
+              badge: student.badge,
             }
           : null;
       })
