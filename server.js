@@ -11,6 +11,7 @@ const Get_Top_Scores = require("./routes/Top_Scores_Routes");
 const Set_Badge = require("./routes/Badge_Routes");
 const Get_Student_Rank = require("./routes/Rank_Routes");
 const Get_Student_Info = require("./routes/Info_Routes");
+const Get_One_Subject = require("./routes/One_Subject_Routes");
 const CONNECT_TO_MONGO_DB = require("./config/db");
 
 CONNECT_TO_MONGO_DB();
@@ -25,6 +26,7 @@ app.use("/", Get_Top_Scores);
 app.use("/", Set_Badge);
 app.use("/", Get_Student_Rank);
 app.use("/", Get_Student_Info);
+app.use("/", Get_One_Subject);
 
 app.get("/health", (req, res) => {
   res.status(200).send("K");
