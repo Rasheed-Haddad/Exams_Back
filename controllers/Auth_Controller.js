@@ -50,13 +50,9 @@ exports.signInStudent = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "60d" }
     );
-    if (
-      !existingStudent.nick_name ||
-      existingStudent.nick_name === "John Doe"
-    ) {
-      existingStudent.nick_name = nick_name || existingStudent.nick_name;
-      await existingStudent.save();
-    }
+    existingStudent.nick_name = nick_name || existingStudent.nick_name;
+
+    await existingStudent.save();
 
     return res.json({ user: existingStudent, token });
   } catch (err) {
