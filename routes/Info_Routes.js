@@ -3,7 +3,8 @@ const router = express.Router();
 const {
   Get_Student_Info,
 } = require("../controllers/Get_Student_Info_Controller");
+const authenticateToken = require("../middlewares/Auth_Middle_Ware");
 
-router.post("/info", Get_Student_Info);
+router.post("/info", authenticateToken, Get_Student_Info);
 
 module.exports = router;
