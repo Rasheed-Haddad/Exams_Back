@@ -48,7 +48,7 @@ exports.signInStudent = async (req, res) => {
     const token = jwt.sign(
       { id: existingStudent._id, name: existingStudent.name },
       process.env.JWT_SECRET,
-      { expiresIn: "60d" }
+      { expiresIn: "30d" }
     );
     existingStudent.nick_name = nick_name || existingStudent.nick_name;
 
